@@ -24,10 +24,30 @@ enum Command {
 }
 
 mod my_module {
+    use std::vec;
+
+    use crate::Command::{Append, Trim, Uppercase};
+
     use super::Command;
 
     // TODO: Complete the function as described above.
     // pub fn transformer(input: ???) -> ??? { ??? }
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        let mut processed_text = vec![];
+        for (mut text, command) in input {
+            match command {
+                Uppercase => processed_text.push(text.to_uppercase()),
+                Trim => processed_text.push(text.trim().to_string()),
+                Append(size) => {
+                    for _ in 0..size {
+                        text.push_str("bar");
+                    }
+                    processed_text.push(text);
+                }
+            }
+        }
+        processed_text
+    }
 }
 
 fn main() {
@@ -39,6 +59,7 @@ mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
     // use ???;
     use super::Command;
+    use super::my_module::transformer;
 
     #[test]
     fn it_works() {
